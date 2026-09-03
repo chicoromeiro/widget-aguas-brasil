@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plataforma Aguas Brasil (teste da equipe)</title>
+  <!--
+    Pagina de teste hospedada no Netlify (so HTML/CSS/JS estatico). O widget
+    e o backend continuam no Render - troque API_BASE abaixo pela URL real do
+    seu servico Render assim que ele estiver no ar (Dashboard do Render mostra
+    a URL apos o primeiro deploy; o padrao e https://<nome-do-servico>.onrender.com).
+  -->
+  <script>
+    window.__ABW_API_BASE__ = "https://aguasbrasil-widget.onrender.com";
+  </script>
+  <link rel="stylesheet" id="abw-css" href="">
+  <style>
+    html, body { margin: 0; background: #0a1e3a; }
+    .portal { display: block; width: 100%; max-width: 1359px; margin: 0 auto; height: auto; }
+    .abw-aviso { position: fixed; top: 0; left: 0; right: 0; z-index: 2147483001;
+      background: #7a1f1f; color: #fff; font: 13px/1.4 system-ui, sans-serif;
+      text-align: center; padding: 6px 12px; display: none; }
+  </style>
+</head>
+<body>
+  <div class="abw-aviso" id="abw-aviso">
+    Nao foi possivel falar com o backend (Render). Verifique se o servico esta
+    ativo e se API_BASE aponta para a URL certa.
+  </div>
+
+  <img class="portal" src="" id="abw-fundo"
+       alt="Plataforma Aguas Brasil (imagem do portal - pagina de teste)">
+
+  <script>
+    (function () {
+      var base = window.__ABW_API_BASE__.replace(/\/$/, "");
+      document.getElementById("abw-css").href = base + "/web/widget.css";
+      document.getElementById("abw-fundo").src = base + "/web/fundo_portal.png";
+
+      var s = document.createElement("script");
+      s.src = base + "/web/widget.js";
+      s.setAttribute("data-api", base);
+      document.body.appendChild(s);
+
+      // Aviso simples se o backend nao responder (Render "dormindo" no plano
+      // free pode levar ~30-60s para acordar na primeira chamada).
+      fetch(base + "/health").catch(function () {
+        document.getElementById("abw-aviso").style.display = "block";
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+{
+  "inicio": {
+    "type": "menu",
+    "message": "Olá! Sou o assistente virtual da Plataforma Águas Brasil (ANA). Escolha um assunto abaixo, ou escreva sua dúvida com suas palavras:",
+    "options": [
+      {"key": "1", "label": "Cadastro, acesso e senha (CNARH)", "goto": "topico_cnarh", "icon": "user"},
+      {"key": "2", "label": "Outorga ou Declaração de Regularidade", "goto": "info_outorga", "icon": "doc"},
+      {"key": "3", "label": "Cobrança pelo uso da água", "goto": "info_cobranca", "icon": "coin"},
+      {"key": "4", "label": "Automonitoramento / Declaração de Uso (DURH)", "goto": "info_automonitoramento", "icon": "drop"},
+      {"key": "5", "label": "Boleto e Arrecadação", "goto": "info_boleto", "icon": "receipt"},
+      {"key": "6", "label": "Fiscalização de Usos de Recursos Hídricos", "goto": "info_fiscalizacao", "icon": "shield"},
+      {"key": "7", "label": "Plataforma Águas Brasil", "goto": "info_aguas_brasil", "icon": "globe"}
+    ]
+  },
+
+  "topico_cnarh": {
+    "type": "info",
+    "contact": "COINT",
+    "keywords": ["cnarh", "cadastro de usuarios", "cadastro nacional", "acesso", "senha"],
+    "message": "Cadastro, acesso e senha (CNARH) são tratados pelo Atendimento ao Usuário (COINT).",
+    "faq": ["senha", "login", "representar", "trocar_email", "primeiro_cadastro",
+            "atualizar_cadastro", "numero_cnarh", "copia_cadastro",
+            "cancelar_interferencia", "ponto_erro"]
+  },
+  "info_outorga": {
+    "type": "info",
+    "contact": "COOUT",
+    "keywords": ["outorga", "declaracao de regularidade", "uso insignificante"],
+    "message": "Outorga, Declaração de Regularidade e uso insignificante são tratados pela Outorga (COOUT).",
+    "faq": ["outorga_nova", "outorga_renovar", "declaracao_regularidade",
+            "uso_insignificante", "copia_portaria", "corpo_estadual", "titularidade"]
+  },
+  "info_cobranca": {
+    "type": "info",
+    "contact": "CSCOB",
+    "keywords": ["cobranca pelo uso", "cobranca da agua", "cobranca de recursos"],
+    "message": "Valor, revisão e contestação da cobrança são tratados pela Coordenação de Cobrança (CSCOB).",
+    "faq": ["cob_revisao", "cob_indevida"]
+  },
+  "info_automonitoramento": {
+    "type": "info",
+    "contact": "COCAM",
+    "keywords": ["automonitoramento", "declaracao de uso"],
+    "message": "A Declaração de Uso (DURH) / automonitoramento é tratada pela área de Fiscalização (COCAM).",
+    "faq": ["declaracao_uso", "acompanhar_processo"]
+  },
+  "info_boleto": {
+    "type": "info",
+    "contact": "COARC",
+    "keywords": ["boleto", "arrecadacao", "segunda via"],
+    "message": "Boletos, segunda via, parcelamento e arrecadação são tratados pela Arrecadação (COARC/SAF).",
+    "faq": ["cob_2via", "cob_vencido", "cob_negociar"]
+  },
+  "info_fiscalizacao": {
+    "type": "info",
+    "contact": "COFIU",
+    "keywords": ["fiscalizacao", "fiscal", "auto de infracao"],
+    "message": "Assuntos de fiscalização de usos de recursos hídricos são tratados pela COFIU. Se precisar, abra um chamado ou volte ao menu.",
+    "faq": []
+  },
+  "info_aguas_brasil": {
+    "type": "info",
+    "contact": "AGUASBRASIL",
+    "keywords": ["aguas brasil", "plataforma aguas brasil", "aguasbrasil", "portal aguas"],
+    "message": "A Plataforma Águas Brasil (https://aguasbrasil.snirh.gov.br/) concentra os serviços de recursos hídricos, com acesso via gov.br.",
+    "faq": ["login", "primeiro_cadastro", "migrar_regla"]
+  }
+}

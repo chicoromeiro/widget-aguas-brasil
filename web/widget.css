@@ -1,0 +1,72 @@
+/* Widget Aguas Brasil - estilo sobrio, uma cor de destaque (azul-marinho) */
+.abw-root { --abw-accent:#1f3864; --abw-accent-2:#2a4a7f; --abw-bg:#ffffff;
+  --abw-user:#e7edf6; --abw-bot:#f4f5f7; --abw-text:#1c1f24; --abw-muted:#5b6470;
+  position:fixed; bottom:20px; right:20px; z-index:2147483000;
+  font-family:'Segoe UI',system-ui,Arial,sans-serif; }
+
+/* Lancador: logo (imagem) + legenda "Posso Ajudar?" abaixo. */
+.abw-launcher { display:flex; flex-direction:column; align-items:center; gap:6px;
+  cursor:pointer; user-select:none; }
+.abw-launcher img { width:92px; height:92px; object-fit:contain; display:block;
+  filter:drop-shadow(0 5px 11px rgba(0,0,0,.32)); transition:transform .12s ease; }
+.abw-launcher:hover img { transform:scale(1.05); }
+.abw-launcher .abw-caption { background:var(--abw-accent); color:#fff; font-size:12.5px;
+  font-weight:600; padding:4px 11px; border-radius:14px; white-space:nowrap;
+  box-shadow:0 3px 10px rgba(0,0,0,.2); }
+/* Quando o chat esta aberto, o lancador some (fecha-se pelo "x" do card). */
+.abw-root.abw-open .abw-launcher { display:none; }
+
+.abw-panel { position:absolute; bottom:0; right:0; width:420px; max-width:calc(100vw - 32px);
+  height:580px; max-height:calc(100vh - 120px); background:var(--abw-bg);
+  border:1px solid #d6d9de; border-radius:12px; box-shadow:0 12px 40px rgba(0,0,0,.22);
+  display:none; flex-direction:column; overflow:hidden; }
+.abw-root.abw-open .abw-panel { display:flex; }
+
+/* Janela maximizada: ocupa quase toda a tela, ancorada a direita. */
+.abw-root.abw-maximized .abw-panel { position:fixed; top:20px; right:20px; bottom:20px;
+  left:auto; width:min(960px, calc(100vw - 40px)); height:auto; max-height:none; }
+
+.abw-header { background:var(--abw-accent); color:#fff; padding:15px 16px; position:relative; }
+.abw-brand { display:flex; align-items:center; gap:10px; padding-right:64px; }
+.abw-headlogo { width:46px; height:46px; object-fit:contain; flex:0 0 auto;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.4)); }
+.abw-header h3 { margin:0; font-size:16.5px; font-weight:600; }
+.abw-header p { margin:3px 0 0; font-size:12.5px; opacity:.85; }
+.abw-header .abw-max, .abw-header .abw-close { position:absolute; top:14px; background:none;
+  border:none; color:#fff; cursor:pointer; padding:4px; line-height:1; }
+.abw-header .abw-close { right:12px; font-size:22px; }
+.abw-header .abw-max { right:46px; }
+.abw-header .abw-max i { display:block; width:13px; height:13px; border:1.7px solid #fff;
+  border-radius:2px; position:relative; }
+.abw-root.abw-maximized .abw-header .abw-max i { width:9px; height:9px; }
+.abw-root.abw-maximized .abw-header .abw-max i::after { content:""; position:absolute;
+  width:9px; height:9px; border:1.7px solid #fff; border-radius:2px; top:-4px; right:-4px;
+  background:var(--abw-accent); }
+
+.abw-body { flex:1; overflow-y:auto; padding:16px; background:#fbfbfc; }
+.abw-msg { max-width:85%; padding:11px 14px; border-radius:12px; margin-bottom:12px;
+  font-size:15px; line-height:1.5; white-space:pre-wrap; word-wrap:break-word; }
+.abw-msg.bot { background:var(--abw-bot); color:var(--abw-text); border-bottom-left-radius:3px; }
+.abw-msg.user { background:var(--abw-user); color:var(--abw-text); margin-left:auto;
+  border-bottom-right-radius:3px; }
+.abw-msg a { color:var(--abw-accent); word-break:break-all; }
+
+.abw-typing { font-size:13px; color:var(--abw-muted); margin-bottom:10px; }
+
+/* Chips de resposta rapida (opcoes clicaveis) */
+.abw-chips { display:flex; flex-direction:column; gap:7px; margin:2px 0 12px; align-items:flex-start; }
+.abw-chip { display:inline-flex; align-items:center; gap:9px; max-width:100%;
+  background:#fff; color:var(--abw-accent); border:1.5px solid #cdd6e5; border-radius:20px;
+  padding:9px 15px; font-size:14px; font-weight:500; line-height:1.25; cursor:pointer;
+  text-align:left; transition:background .12s ease, color .12s ease, border-color .12s ease; }
+.abw-chip:hover { background:var(--abw-accent); color:#fff; border-color:var(--abw-accent); }
+.abw-chip .abw-ic { display:inline-flex; flex:0 0 auto; }
+.abw-chip .abw-ic svg { display:block; }
+
+.abw-footer { display:flex; gap:8px; padding:12px; border-top:1px solid #e5e7eb; background:#fff; }
+.abw-footer input { flex:1; border:1px solid #cfd3da; border-radius:8px; padding:11px 13px;
+  font-size:15px; outline:none; }
+.abw-footer input:focus { border-color:var(--abw-accent); }
+.abw-footer button { background:var(--abw-accent); color:#fff; border:none; border-radius:8px;
+  padding:0 18px; font-size:15px; cursor:pointer; }
+.abw-footer button:disabled { opacity:.5; cursor:default; }

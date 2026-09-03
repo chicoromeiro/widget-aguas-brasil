@@ -1,0 +1,67 @@
+# Blueprint do Render: cria o servico web + banco Postgres juntos.
+# Deploy: dashboard do Render -> New -> Blueprint -> selecione este repositorio.
+# As variaveis com "sync: false" sao preenchidas manualmente no dashboard
+# (nunca ficam no repositorio).
+databases:
+  - name: aguasbrasil-db
+    plan: free
+    databaseName: aguasbrasil
+    user: aguasbrasil
+
+services:
+  - type: web
+    name: aguasbrasil-widget
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: aguasbrasil-db
+          property: connectionString
+
+      # CORS: durante o teste, "*" libera qualquer origem (inclusive a pagina
+      # do Netlify). Depois que a URL do Netlify estiver definida, pode trocar
+      # por ela especificamente para restringir.
+      - key: ALLOWED_ORIGINS
+        value: "*"
+
+      # IA (Gemini) - a chave e secreta, preenchida no dashboard.
+      - key: LLM_PROVIDER
+        value: gemini
+      - key: GEMINI_MODEL
+        value: gemini-3.1-flash-lite
+      - key: GOOGLE_API_KEY
+        sync: false
+
+      # Seguranca / anti-abuso.
+      - key: RATE_LIMIT_ENABLED
+        value: "true"
+      - key: RATE_LIMIT_PER_MIN
+        value: "30"
+      - key: TICKET_CAP_PER_DAY
+        value: "5"
+      - key: IP_HASH_SALT
+        sync: false
+
+      # Log de perguntas nao/mal-respondidas (GET /admin/duvidas). Vazio =
+      # endpoint desligado; defina um valor no dashboard para habilitar.
+      - key: ADMIN_TOKEN
+        sync: false
+
+      # E-mail do chamado (SMTP) - opcional; sem isso, o chamado e so
+      # registrado no banco (sem envio), o que e normal em teste.
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: CHAMADO_EMAIL_TO
+        value: cnarh@ana.gov.br
+      - key: CHAMADO_EMAIL_FROM
+        sync: false

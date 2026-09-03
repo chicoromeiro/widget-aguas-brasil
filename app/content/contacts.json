@@ -1,0 +1,37 @@
+{
+  "COINT": {
+    "nome": "COINT - Cadastro de Usuários (CNARH)",
+    "email": "cnarh@ana.gov.br",
+    "telefone": "(61) 2109-5586"
+  },
+  "COOUT": {
+    "nome": "COOUT - Outorga e Declaração de Regularidade",
+    "email": "outorga@ana.gov.br",
+    "telefone": "(61) 2109-5228 / 2109-5278"
+  },
+  "CSCOB": {
+    "nome": "CSCOB/SAS - Cobrança pelo uso da água",
+    "email": "cobranca@ana.gov.br",
+    "telefone": "(61) 2109-5344"
+  },
+  "COCAM": {
+    "nome": "COCAM/SFI - Automonitoramento / DURH",
+    "email": "cocam@ana.gov.br",
+    "telefone": "(61) 2109-5280"
+  },
+  "COARC": {
+    "nome": "COARC/SAF - Boleto e Arrecadação",
+    "email": "coarc@ana.gov.br",
+    "telefone": "(61) 2109-5124 / 2109-5123"
+  },
+  "COFIU": {
+    "nome": "COFIU - Fiscalização de Usos de Recursos Hídricos",
+    "email": "cofiu@ana.gov.br",
+    "telefone": "(61) 2109-5280"
+  },
+  "AGUASBRASIL": {
+    "nome": "Plataforma Águas Brasil",
+    "email": "aguasbrasil@ana.gov.br",
+    "telefone": "(61) 2109-5586"
+  }
+}

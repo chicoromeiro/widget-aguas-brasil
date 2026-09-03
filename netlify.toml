@@ -1,0 +1,5 @@
+# Config do Netlify para a pagina de teste (site puramente estatico).
+# Se conectar este repositorio ao Netlify, ele ja sabe o que publicar.
+[build]
+  publish = "netlify"
+  command = ""
