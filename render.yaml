@@ -17,6 +17,13 @@ services:
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     envVars:
+      # Fixa a versao do Python (o padrao do Render, muito recente, nao tem
+      # wheel pre-compilado do pydantic-core -> build falha tentando compilar
+      # Rust num filesystem somente-leitura). Redundante com o arquivo
+      # .python-version na raiz do repo (o arquivo funciona mesmo fora do
+      # fluxo normal do Blueprint).
+      - key: PYTHON_VERSION
+        value: 3.11.9
       - key: DATABASE_URL
         fromDatabase:
           name: aguasbrasil-db
