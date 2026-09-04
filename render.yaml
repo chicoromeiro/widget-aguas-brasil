@@ -58,15 +58,13 @@ services:
       - key: ADMIN_TOKEN
         sync: false
 
-      # E-mail do chamado (SMTP) - opcional; sem isso, o chamado e so
-      # registrado no banco (sem envio), o que e normal em teste.
-      - key: SMTP_HOST
+      # E-mail do chamado, via API HTTP do Mailgun - opcional; sem isso, o
+      # chamado e so registrado no banco (sem envio), o que e normal em
+      # teste. NAO usa SMTP: portas SMTP sao bloqueadas no plano gratuito do
+      # Render (ver comentario em app/config.py).
+      - key: MAILGUN_API_KEY
         sync: false
-      - key: SMTP_PORT
-        value: "587"
-      - key: SMTP_USER
-        sync: false
-      - key: SMTP_PASSWORD
+      - key: MAILGUN_DOMAIN
         sync: false
       - key: CHAMADO_EMAIL_TO
         value: cnarh@ana.gov.br

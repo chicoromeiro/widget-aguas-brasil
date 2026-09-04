@@ -20,15 +20,22 @@ CONFIDENCE_THRESHOLD: float = float(os.getenv("CONFIDENCE_THRESHOLD", "0.5"))
 # consumido: as sessoes permanecem no banco ate a limpeza ser implementada.
 SESSION_TIMEOUT_MINUTES: int = int(os.getenv("SESSION_TIMEOUT_MINUTES", "30"))
 
-# E-mail do chamado (Sprint 2 - opcional nesta fase)
-SMTP_HOST: str = os.getenv("SMTP_HOST", "")
-SMTP_PORT: int = int(os.getenv("SMTP_PORT", "587"))
-SMTP_USER: str = os.getenv("SMTP_USER", "")
-SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "")
+# E-mail do chamado, via API HTTP do Mailgun (Sprint 2 - opcional nesta fase).
+# Nao usa SMTP: varios provedores de hospedagem (Render incluso, no plano
+# gratuito) bloqueiam trafego de saida nas portas SMTP (25/465/587) para
+# reduzir abuso - a chamada trava ate estourar o timeout, sem erro de
+# credencial. A API HTTP roda por HTTPS normal (porta 443), que nao e
+# bloqueada. E o mesmo padrao que o bot de WhatsApp original ja usava.
+MAILGUN_API_KEY: str = os.getenv("MAILGUN_API_KEY", "")
+MAILGUN_DOMAIN: str = os.getenv("MAILGUN_DOMAIN", "")
+# Troque para "https://api.eu.mailgun.net/v3" se o dominio foi criado na
+# regiao EU do Mailgun (a API US e EU nao sao intercambiaveis).
+MAILGUN_BASE_URL: str = os.getenv("MAILGUN_BASE_URL", "https://api.mailgun.net/v3")
+
 CHAMADO_EMAIL_TO: str = os.getenv("CHAMADO_EMAIL_TO", "cnarh@ana.gov.br")
 CHAMADO_EMAIL_FROM: str = os.getenv("CHAMADO_EMAIL_FROM", "nao-responder@exemplo.gov.br")
 
-EMAIL_ENABLED: bool = bool(SMTP_HOST and SMTP_USER and SMTP_PASSWORD)
+EMAIL_ENABLED: bool = bool(MAILGUN_API_KEY and MAILGUN_DOMAIN)
 
 # ----------------------------------------------------------------------------
 # Seguranca / anti-abuso (Sprint 2)

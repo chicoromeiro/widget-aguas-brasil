@@ -1,18 +1,22 @@
 """
-Envio do e-mail de chamado para a equipe da ANA.
+Envio do e-mail de chamado para a equipe da ANA, via API HTTP do Mailgun.
 
 Correcao de seguranca em relacao ao bot original: todos os campos do usuario
 sao SANITIZADOS (escape de HTML) antes de compor o e-mail, evitando que
 conteudo malicioso chegue renderizado ao cliente de e-mail da equipe.
 
-Se o SMTP nao estiver configurado, o chamado NAO deixa de existir: ele e salvo
-e recebe protocolo; apenas o envio fica pendente (registrado em log). Isso e
-comportamento real, nao mock - o envio depende de credenciais que serao
-fornecidas na fase de producao.
+Se o Mailgun nao estiver configurado, o chamado NAO deixa de existir: ele e
+salvo e recebe protocolo; apenas o envio fica pendente (registrado em log).
+Isso e comportamento real, nao mock - o envio depende de credenciais que
+serao fornecidas na fase de producao.
+
+Por que API HTTP e nao SMTP: varios provedores de hospedagem bloqueiam
+trafego de saida nas portas SMTP no plano gratuito (ver app/config.py). A API
+roda por HTTPS normal, sem esse problema.
 """
-import smtplib
 import logging
-from email.mime.text import MIMEText
+
+import httpx
 
 from app import config
 from app.validators import sanitizar
@@ -29,29 +33,33 @@ _CAMPOS = [
 ]
 
 
-def _corpo_html(dados: dict, protocolo: str) -> str:
-    linhas = [f"<h2>Novo Chamado - Plataforma Aguas Brasil</h2>",
-              f"<p><strong>Protocolo:</strong> {sanitizar(protocolo)}</p>"]
+def _corpo(dados: dict, protocolo: str) -> tuple:
+    """Monta o corpo do e-mail do chamado em HTML e em texto simples."""
+    html = [f"<h2>Novo Chamado - Plataforma Aguas Brasil</h2>",
+            f"<p><strong>Protocolo:</strong> {sanitizar(protocolo)}</p>"]
+    texto = [f"Novo Chamado - Plataforma Aguas Brasil", f"Protocolo: {protocolo}"]
     for chave, rotulo in _CAMPOS:
         valor = sanitizar(str(dados.get(chave, "Nao informado")))
-        linhas.append(f"<p><strong>{rotulo}:</strong> {valor}</p>")
-    linhas.append("<p><em>E-mail automatico do assistente virtual (COINT/ANA).</em></p>")
-    return "\n".join(linhas)
+        html.append(f"<p><strong>{rotulo}:</strong> {valor}</p>")
+        texto.append(f"{rotulo}: {dados.get(chave, 'Nao informado')}")
+    html.append("<p><em>E-mail automatico do assistente virtual (COINT/ANA).</em></p>")
+    texto.append("\nE-mail automatico do assistente virtual (COINT/ANA).")
+    return "\n".join(texto), "\n".join(html)
 
 
-def _enviar(assunto: str, corpo_html: str, destino: str) -> bool:
-    """Envia um e-mail HTML. Retorna True se enviado."""
+def _enviar(assunto: str, texto: str, html: str, destino: str) -> bool:
+    """Envia um e-mail via API HTTP do Mailgun. Retorna True se aceito para envio."""
     if not config.EMAIL_ENABLED:
         return False
     try:
-        msg = MIMEText(corpo_html, "html", "utf-8")
-        msg["Subject"] = assunto
-        msg["From"] = config.CHAMADO_EMAIL_FROM
-        msg["To"] = destino
-        with smtplib.SMTP(config.SMTP_HOST, config.SMTP_PORT, timeout=30) as smtp:
-            smtp.starttls()
-            smtp.login(config.SMTP_USER, config.SMTP_PASSWORD)
-            smtp.sendmail(config.CHAMADO_EMAIL_FROM, [destino], msg.as_string())
+        r = httpx.post(
+            f"{config.MAILGUN_BASE_URL}/{config.MAILGUN_DOMAIN}/messages",
+            auth=("api", config.MAILGUN_API_KEY),
+            data={"from": config.CHAMADO_EMAIL_FROM, "to": [destino],
+                  "subject": assunto, "text": texto, "html": html},
+            timeout=15,
+        )
+        r.raise_for_status()
         return True
     except Exception as e:  # noqa: BLE001
         logger.error("Falha ao enviar e-mail para %s: %s", destino, e)
@@ -60,21 +68,21 @@ def _enviar(assunto: str, corpo_html: str, destino: str) -> bool:
 
 def enviar_codigo_email(email: str, codigo: str) -> bool:
     """Envia o codigo de confirmacao para o e-mail informado no chamado."""
-    corpo = (f"<p>Seu codigo de confirmacao para abrir o chamado e:</p>"
-             f"<h2>{sanitizar(codigo)}</h2>"
-             f"<p>Se voce nao solicitou, ignore este e-mail.</p>")
-    return _enviar("Codigo de confirmacao - Plataforma Aguas Brasil", corpo, email)
+    codigo_seguro = sanitizar(codigo)
+    texto = f"Seu codigo de confirmacao para abrir o chamado e: {codigo_seguro}\n\nSe voce nao solicitou, ignore este e-mail."
+    html = (f"<p>Seu codigo de confirmacao para abrir o chamado e:</p>"
+            f"<h2>{codigo_seguro}</h2>"
+            f"<p>Se voce nao solicitou, ignore este e-mail.</p>")
+    return _enviar("Codigo de confirmacao - Plataforma Aguas Brasil", texto, html, email)
 
 
 def enviar_email_chamado(dados: dict, protocolo: str) -> bool:
     """Envia o e-mail do chamado. Retorna True se enviado, False caso contrario."""
     if not config.EMAIL_ENABLED:
-        logger.info("SMTP nao configurado; chamado %s salvo sem envio de e-mail.", protocolo)
+        logger.info("Mailgun nao configurado; chamado %s salvo sem envio de e-mail.", protocolo)
         return False
-    ok = _enviar(
-        f"Novo Chamado - Plataforma Aguas Brasil - {protocolo}",
-        _corpo_html(dados, protocolo),
-        config.CHAMADO_EMAIL_TO,
-    )
+    texto, html = _corpo(dados, protocolo)
+    ok = _enviar(f"Novo Chamado - Plataforma Aguas Brasil - {protocolo}",
+                 texto, html, config.CHAMADO_EMAIL_TO)
     logger.info("Chamado %s %s.", protocolo, "enviado por e-mail" if ok else "com falha de envio")
     return ok
