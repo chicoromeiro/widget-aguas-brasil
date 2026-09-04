@@ -30,6 +30,11 @@ from app.validators import (
 from app.sessions import Repository, SessionState
 from app.notifier import enviar_email_chamado, enviar_codigo_email
 
+# TEMPORARIO (set/2026): todos os telefones da ANA estao indisponiveis. Marca
+# essa observacao ao lado de todo telefone mostrado nos cards de contato.
+# Remover esta flag (volta a mostrar so o numero) quando normalizarem.
+TELEFONES_INDISPONIVEIS = True
+
 START_SIGNAL = "__start__"
 _RESET_WORDS = {"0", "menu", "inicio", "voltar", "voltar menu", "menu inicial"}
 _CONFIRMA = {"confirmar", "sim", "ok", "correto"}
@@ -125,7 +130,8 @@ class ChatEngine:
             if c:
                 partes.append("")
                 partes.append(f"Contato: {c['nome']}")
-                partes.append(f"Telefone: {c['telefone']}")
+                nota_tel = " (temporariamente indisponível)" if TELEFONES_INDISPONIVEIS else ""
+                partes.append(f"Telefone: {c['telefone']}{nota_tel}")
                 partes.append(f"E-mail: {c['email']}")
         partes.append("")
         # Chamada final DEPOIS do contato: convite aos sub-botoes (se houver) ou
