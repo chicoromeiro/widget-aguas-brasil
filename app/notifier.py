@@ -61,6 +61,10 @@ def _enviar(assunto: str, texto: str, html: str, destino: str) -> bool:
         )
         r.raise_for_status()
         return True
+    except httpx.HTTPStatusError as e:
+        logger.error("Falha ao enviar e-mail para %s: %s - corpo: %s",
+                     destino, e, e.response.text)
+        return False
     except Exception as e:  # noqa: BLE001
         logger.error("Falha ao enviar e-mail para %s: %s", destino, e)
         return False
