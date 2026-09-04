@@ -24,16 +24,20 @@
   }
 
   // Renderiza texto com quebras de linha e links (sem innerHTML, seguro).
+  // Aceita dois formatos de link: "[texto curto](URL)" (preferido - esconde a
+  // URL longa) e URL "nua" (https://... solta no texto, vira link com a
+  // propria URL como texto - mantido por compatibilidade).
   function renderText(container, text) {
-    var linkRe = /(https?:\/\/[^\s]+)/g;
+    var linkRe = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|(https?:\/\/[^\s]+)/g;
     text.split("\n").forEach(function (line, i) {
       if (i > 0) container.appendChild(document.createElement("br"));
       var last = 0, m;
       linkRe.lastIndex = 0;
       while ((m = linkRe.exec(line)) !== null) {
         if (m.index > last) container.appendChild(document.createTextNode(line.slice(last, m.index)));
-        var a = el("a", null, m[0]);
-        a.href = m[0]; a.target = "_blank"; a.rel = "noopener noreferrer";
+        var url = m[2] || m[3], rotulo = m[1] || m[3];
+        var a = el("a", null, rotulo);
+        a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer";
         container.appendChild(a);
         last = m.index + m[0].length;
       }

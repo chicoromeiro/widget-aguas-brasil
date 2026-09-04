@@ -9,13 +9,13 @@
     "secao": "Boleto",
     "botao": "2ª via de boleto",
     "pergunta": "2ª via / boleto atualizado para pagamento",
-    "resposta": "Boletos atualizados e segundas vias podem ser emitidos em https://boletoonline.ana.gov.br/cobranca/Default.aspx. Persistindo dúvida, procure a Arrecadação: coarc@ana.gov.br, tel. (61) 2109-5124/5123."
+    "resposta": "Boletos atualizados e segundas vias podem ser emitidos no [Boleto Online](https://boletoonline.ana.gov.br/cobranca/Default.aspx). Persistindo dúvida, procure a Arrecadação: coarc@ana.gov.br, tel. (61) 2109-5124/5123."
   },
   "cob_vencido": {
     "secao": "Boleto",
     "botao": "Venceu / parcelar / multa",
     "pergunta": "Boleto venceu, quero parcelar ou pedir dispensa de multa",
-    "resposta": "Reemita o boleto atualizado em https://boletoonline.ana.gov.br/cobranca/Default.aspx. Para parcelamento ou dispensa de multa, contate a Arrecadação: coarc@ana.gov.br, tel. (61) 2109-5124/5123."
+    "resposta": "Reemita o boleto atualizado no [Boleto Online](https://boletoonline.ana.gov.br/cobranca/Default.aspx). Para parcelamento ou dispensa de multa, contate a Arrecadação: coarc@ana.gov.br, tel. (61) 2109-5124/5123."
   },
   "cob_indevida": {
     "secao": "Cobrança",
@@ -34,19 +34,25 @@
     "secao": "Acesso",
     "botao": "Esqueci a senha",
     "pergunta": "Esqueci minha senha / preciso de nova senha do empreendimento",
-    "resposta": "O acesso é via Plataforma Águas Brasil (https://aguasbrasil.snirh.gov.br/) com login gov.br. Para recuperar um empreendimento que estava no REGLA, solicite nova senha a cnarh@ana.gov.br informando o número CNARH e o CPF/CNPJ. Vídeo: Guia para usuários já cadastrados (https://www.youtube.com/watch?v=Xl-IqIZNZUg)."
+    "resposta": "O acesso é via [Plataforma Águas Brasil](https://aguasbrasil.snirh.gov.br/) com login gov.br. Para recuperar um empreendimento que estava no REGLA, solicite nova senha a cnarh@ana.gov.br informando o número CNARH e o CPF/CNPJ. Vídeo: [Guia para usuários já cadastrados](https://www.youtube.com/watch?v=Xl-IqIZNZUg)."
   },
   "login": {
     "secao": "Acesso",
     "botao": "Não consigo logar",
     "pergunta": "Não consigo acessar o sistema / como faço login",
-    "resposta": "Acesse https://aguasbrasil.snirh.gov.br/ com sua conta gov.br (não é recomendado informar a senha gov.br a terceiros). Vídeo: Como Navegar pela Plataforma (https://www.youtube.com/watch?v=MMQCVM5aukE). Se o erro persistir, escreva para cnarh@ana.gov.br anexando um print da tela com a mensagem de erro."
+    "resposta": "Acesse a [Plataforma Águas Brasil](https://aguasbrasil.snirh.gov.br/) com sua conta gov.br (não é recomendado informar a senha gov.br a terceiros). Vídeo: [Como Navegar pela Plataforma](https://www.youtube.com/watch?v=MMQCVM5aukE). Se o erro persistir, escreva para cnarh@ana.gov.br anexando um print da tela com a mensagem de erro."
   },
   "representar": {
     "secao": "Acesso",
     "botao": "Representar / trocar procurador",
     "pergunta": "Quero acessar ou representar o empreendimento de outra pessoa/empresa; trocar ou indicar procurador/representante",
-    "resposta": "Na Plataforma, o próprio titular pode indicar você pela opção 'Quero ser representado'. Para alterar o e-mail de contato ou receber nova senha em nome de terceiro, é necessária procuração do titular (pessoa física) ou representante legal (pessoa jurídica) em PDF para cnarh@ana.gov.br."
+    "resposta": "Na Plataforma, o próprio titular pode indicar você pela opção 'Quero ser representado'. Para alterar o e-mail de contato ou receber nova senha em nome de terceiro, é necessária procuração do titular (pessoa física) ou representante legal (pessoa jurídica) em PDF para cnarh@ana.gov.br. Tutorial completo: [papéis de usuário, procurador e responsável técnico](https://www.gov.br/ana/pt-br/assuntos/regulacao-e-fiscalizacao/outorga/solicite-sua-outorga/tutoriais/tutoriais-da-plataforma-aguas-brasil/arquivos/01-usuarios-procuradores-e-responsaveis-tecnicos)."
+  },
+  "responsavel_tecnico": {
+    "secao": "Acesso",
+    "botao": "Responsável técnico / outro titular",
+    "pergunta": "Como indico um responsável técnico ou outro titular no meu empreendimento",
+    "resposta": "No módulo do empreendimento, acesse 'Detalhar Responsáveis Técnicos' ou 'Detalhar Outros Titulares' no menu lateral esquerdo para incluir ou excluir essas pessoas — ambas precisam já ter cadastro próprio na Plataforma com o gov.br. O responsável técnico pode solicitar/alterar outorgas e consultar dados do empreendimento; o outro titular tem acesso total, incluindo vincular/desvincular titulares. [Tutorial completo](https://www.gov.br/ana/pt-br/assuntos/regulacao-e-fiscalizacao/outorga/solicite-sua-outorga/tutoriais/tutoriais-da-plataforma-aguas-brasil/arquivos/01-usuarios-procuradores-e-responsaveis-tecnicos)."
   },
   "trocar_email": {
     "secao": "Acesso",
@@ -65,13 +71,31 @@
     "secao": "Outorga",
     "botao": "Nova outorga",
     "pergunta": "Como solicito uma outorga / uma nova outorga",
-    "resposta": "O pedido é feito na Plataforma Águas Brasil (https://aguasbrasil.snirh.gov.br/): selecione o usuário e o empreendimento e clique em 'Nova Outorga'. Vídeo: Como Emitir uma Nova Outorga (https://www.youtube.com/watch?v=Av8D5Umq1oM). Dúvidas: outorga@ana.gov.br."
+    "resposta": "O pedido é feito na [Plataforma Águas Brasil](https://aguasbrasil.snirh.gov.br/): selecione o usuário e o empreendimento e clique em 'Nova Outorga'. Vídeo: [Como Emitir uma Nova Outorga](https://www.youtube.com/watch?v=Av8D5Umq1oM). Dúvidas: outorga@ana.gov.br. [Tutorial completo](https://www.gov.br/ana/pt-br/assuntos/regulacao-e-fiscalizacao/outorga/solicite-sua-outorga/tutoriais/tutoriais-da-plataforma-aguas-brasil/arquivos/05-fazer-um-pedido-de-outorga)."
   },
   "outorga_renovar": {
     "secao": "Outorga",
     "botao": "Renovar outorga",
     "pergunta": "Quero renovar minha outorga",
-    "resposta": "A renovação deve ser pedida entre 365 e 90 dias antes do fim da validade (art. 48 da Resolução ANA nº 236/2024), pela Plataforma Águas Brasil. Análise em até 180 dias. Dúvidas: outorga@ana.gov.br."
+    "resposta": "A renovação deve ser pedida entre 365 e 90 dias antes do fim da validade (art. 48 da Resolução ANA nº 236/2024), pela Plataforma Águas Brasil. Análise em até 180 dias. Dúvidas: outorga@ana.gov.br. [Tutorial completo](https://www.gov.br/ana/pt-br/assuntos/regulacao-e-fiscalizacao/outorga/solicite-sua-outorga/tutoriais/tutoriais-da-plataforma-aguas-brasil/arquivos/05-fazer-um-pedido-de-outorga)."
+  },
+  "outorga_desistir": {
+    "secao": "Outorga",
+    "botao": "Desistir da outorga",
+    "pergunta": "Quero desistir / comunicar desistência de uma outorga",
+    "resposta": "A comunicação de desistência pode ser feita a qualquer momento durante a vigência da outorga, e a revogação vale a partir da data do pedido. Na lista de Interferências, use o botão de opções (três pontos) da outorga e selecione 'Desistir Outorga'. A desistência não dispensa as obrigações já vencidas de cobrança e fiscalização. [Tutorial completo](https://www.gov.br/ana/pt-br/assuntos/regulacao-e-fiscalizacao/outorga/solicite-sua-outorga/tutoriais/tutoriais-da-plataforma-aguas-brasil/arquivos/05-fazer-um-pedido-de-outorga)."
+  },
+  "outorga_responder_comunicacao": {
+    "secao": "Outorga",
+    "botao": "Responder comunicação da ANA",
+    "pergunta": "A ANA pediu informações complementares no meu pedido de outorga, como respondo",
+    "resposta": "Acesse a interferência na lista de Atos Autorizativos e Pedidos, abra a aba 'Comunicação' e clique em 'Responder' para enviar sua mensagem e anexar documentos (PDF, DOC, XLS, JPG ou PNG). O prazo é de 10 dias corridos a partir do recebimento; sem resposta, o pedido pode ser indeferido por insuficiência de informações. [Tutorial completo](https://www.gov.br/ana/pt-br/assuntos/regulacao-e-fiscalizacao/outorga/solicite-sua-outorga/tutoriais/tutoriais-da-plataforma-aguas-brasil/arquivos/06-responder-a-uma-comunicacao-da-ana)."
+  },
+  "outorga_aprovar_ajustes": {
+    "secao": "Outorga",
+    "botao": "Aprovar ajustes no pedido",
+    "pergunta": "A ANA fez um ajuste no meu pedido de outorga, como aprovo ou rejeito",
+    "resposta": "Na interferência com ajuste pendente, abra a tela 'Aprovar/Rejeitar Análise Técnica', compare os dados originais com os ajustados e clique em 'Aceitar os Dados Ajustados' ou 'Rejeitar os Dados Ajustados'. O prazo é de 10 dias corridos; sem resposta ou em caso de recusa, o processo segue com sugestão de indeferimento. [Tutorial completo](https://www.gov.br/ana/pt-br/assuntos/regulacao-e-fiscalizacao/outorga/solicite-sua-outorga/tutoriais/tutoriais-da-plataforma-aguas-brasil/arquivos/07-aprovar-ajustes-em-um-pedido-de-outorga)."
   },
   "uso_insignificante": {
     "secao": "Outorga",
@@ -83,7 +107,7 @@
     "secao": "Outorga",
     "botao": "Cópia da portaria / certidão",
     "pergunta": "Preciso de cópia da portaria de outorga / de uma certidão",
-    "resposta": "Autoatendimento: use a ferramenta 'Consulta de Atos' (https://aguasbrasil.snirh.gov.br/consulta-de-atos) para pesquisar e baixar sua outorga ou ato administrativo, pelo número do ato ou pelo nome do empreendimento, sem login. Para uma certidão específica, contate cnarh@ana.gov.br ou outorga@ana.gov.br."
+    "resposta": "Autoatendimento: use a ferramenta [Consulta de Atos](https://aguasbrasil.snirh.gov.br/consulta-de-atos) para pesquisar e baixar sua outorga ou ato administrativo, pelo número do ato ou pelo nome do empreendimento, sem login. Para uma certidão específica, contate cnarh@ana.gov.br ou outorga@ana.gov.br."
   },
   "corpo_estadual": {
     "secao": "Outorga",
@@ -95,68 +119,74 @@
     "secao": "Outorga",
     "botao": "Transferir titularidade",
     "pergunta": "Quero transferir a titularidade da outorga para outro titular",
-    "resposta": "A transferência de titularidade de outorga é tratada pela área de Outorga (COOUT): outorga@ana.gov.br, tel. (61) 2109-5228 / 2109-5278. Informe o número CNARH, o CPF/CNPJ e os dados do novo titular."
+    "resposta": "A transferência é feita pela própria Plataforma Águas Brasil quando muda o CPF/CNPJ responsável pelo empreendimento (ex.: venda, concessão). O futuro titular inicia o pedido em 'Solicitar Transferência de Outorga'; em seguida, o atual titular aceita ou rejeita pela mesma tela. Empreendimentos inadimplentes não podem transferir outorga. Dúvidas: outorga@ana.gov.br. [Tutorial completo](https://www.gov.br/ana/pt-br/assuntos/regulacao-e-fiscalizacao/outorga/solicite-sua-outorga/tutoriais/tutoriais-da-plataforma-aguas-brasil/arquivos/09-fazer-um-pedido-de-transferencia-de-titularidade)."
   },
   "declaracao_regularidade": {
     "secao": "Outorga",
     "botao": "Declaração de Regularidade",
     "pergunta": "Como faço a Declaração de Regularidade de uso da água",
-    "resposta": "A Declaração de Regularidade é solicitada na Plataforma Águas Brasil (https://aguasbrasil.snirh.gov.br/), junto com a outorga, e é tratada pela área de Outorga (COOUT): outorga@ana.gov.br, tel. (61) 2109-5228 / 2109-5278. Acesse com o gov.br, selecione o empreendimento e inicie o pedido. Não confundir com a Declaração de Uso / automonitoramento (que é da Fiscalização)."
+    "resposta": "A Declaração de Regularidade é solicitada na [Plataforma Águas Brasil](https://aguasbrasil.snirh.gov.br/), junto com a outorga, e é tratada pela área de Outorga (COOUT): outorga@ana.gov.br, tel. (61) 2109-5228 / 2109-5278. Acesse com o gov.br, selecione o empreendimento e inicie o pedido. Não confundir com a Declaração de Uso / automonitoramento (que é da Fiscalização)."
   },
 
   "copia_cadastro": {
     "secao": "Cadastro",
     "botao": "Cópia / 2ª via do cadastro",
     "pergunta": "Preciso de cópia / 2ª via do meu cadastro (PDF da interferência)",
-    "resposta": "Autoatendimento: baixe seus atos pela 'Consulta de Atos' (https://aguasbrasil.snirh.gov.br/consulta-de-atos) ou, logado com o gov.br, acesse o módulo 'Cadastro de Usuários' (CNARH) para visualizar seus dados. Precisando de cópia específica do cadastro, solicite a cnarh@ana.gov.br informando o número CNARH e/ou o número da interferência."
+    "resposta": "Autoatendimento: baixe seus atos pela [Consulta de Atos](https://aguasbrasil.snirh.gov.br/consulta-de-atos) ou, logado com o gov.br, acesse o módulo 'Cadastro de Usuários' (CNARH) para visualizar seus dados. Precisando de cópia específica do cadastro, solicite a cnarh@ana.gov.br informando o número CNARH e/ou o número da interferência."
   },
   "cancelar_interferencia": {
     "secao": "Cadastro",
     "botao": "Cancelar / excluir ponto",
     "pergunta": "Quero cancelar ou excluir uma interferência / um ponto",
-    "resposta": "Enquanto a interferência ainda estiver editável, verifique no módulo 'Cadastro de Usuários' (CNARH) da Plataforma Águas Brasil (https://aguasbrasil.snirh.gov.br/) se há opção de exclusão ou cancelamento. Após o envio da declaração, ela fica 'Em Análise' e não pode mais ser editada por você. Não havendo a opção, ou já estando 'Em Análise', solicite a cnarh@ana.gov.br informando o número da interferência e o CNARH."
+    "resposta": "Enquanto a interferência ainda estiver editável, verifique no módulo 'Cadastro de Usuários' (CNARH) da [Plataforma Águas Brasil](https://aguasbrasil.snirh.gov.br/) se há opção de exclusão ou cancelamento. Após o envio da declaração, ela fica 'Em Análise' e não pode mais ser editada por você. Não havendo a opção, ou já estando 'Em Análise', solicite a cnarh@ana.gov.br informando o número da interferência e o CNARH."
   },
   "ponto_erro": {
     "secao": "Cadastro",
     "botao": "Ponto com erro / rio errado",
     "pergunta": "Meu ponto está com erro / a interferência ficou associada ao rio errado",
-    "resposta": "Autoatendimento: enquanto a interferência estiver editável, corrija você mesmo no módulo 'Cadastro de Usuários' (CNARH) da Plataforma (https://aguasbrasil.snirh.gov.br/), pela opção de atualização de dados (nome do rio, coordenadas, etc.), e envie para análise. Após o envio, ela fica 'Em Análise' e não pode mais ser editada; nesse caso, ou se o curso d'água não estiver mapeado, reporte a cnarh@ana.gov.br com o número da interferência e o curso d'água correto."
+    "resposta": "Autoatendimento: enquanto a interferência estiver editável, corrija você mesmo no módulo 'Cadastro de Usuários' (CNARH) da [Plataforma Águas Brasil](https://aguasbrasil.snirh.gov.br/), pela opção de atualização de dados (nome do rio, coordenadas, etc.), e envie para análise. Após o envio, ela fica 'Em Análise' e não pode mais ser editada; nesse caso, ou se o curso d'água não estiver mapeado, reporte a cnarh@ana.gov.br com o número da interferência e o curso d'água correto."
   },
   "migrar_regla": {
     "secao": "Cadastro",
     "botao": "Migrar do REGLA",
     "pergunta": "Como migro do CNARH/REGLA para a nova plataforma",
-    "resposta": "Desde 02/12/2025 o cadastro e os pedidos são feitos na Plataforma Águas Brasil (https://aguasbrasil.snirh.gov.br), com login gov.br. Assista aos tutoriais em vídeo. Dúvidas: cnarh@ana.gov.br."
+    "resposta": "Desde 02/12/2025 o cadastro e os pedidos são feitos na [Plataforma Águas Brasil](https://aguasbrasil.snirh.gov.br), com login gov.br. Assista aos tutoriais em vídeo. Dúvidas: cnarh@ana.gov.br. Tutorial completo: [usar a senha antiga do REGLA para recuperar o empreendimento](https://www.gov.br/ana/pt-br/assuntos/regulacao-e-fiscalizacao/outorga/solicite-sua-outorga/tutoriais/tutoriais-da-plataforma-aguas-brasil/arquivos/04-recuperar-empreendimento-existente)."
   },
   "numero_cnarh": {
     "secao": "Cadastro",
     "botao": "Número CNARH",
     "pergunta": "Preciso do número CNARH vinculado à minha outorga",
-    "resposta": "Autoatendimento: entre na Plataforma Águas Brasil (https://aguasbrasil.snirh.gov.br/) com o gov.br e acesse o módulo 'Cadastro de Usuários' (CNARH); o número CNARH/interferência do seu empreendimento aparece ali. Para localizar a outorga ou ato vinculado, use também a 'Consulta de Atos' (https://aguasbrasil.snirh.gov.br/consulta-de-atos). Não localizando, solicite ao Atendimento informando CPF/CNPJ e dados do empreendimento: cnarh@ana.gov.br."
+    "resposta": "Autoatendimento: entre na [Plataforma Águas Brasil](https://aguasbrasil.snirh.gov.br/) com o gov.br e acesse o módulo 'Cadastro de Usuários' (CNARH); o número CNARH/interferência do seu empreendimento aparece ali. Para localizar a outorga ou ato vinculado, use também a [Consulta de Atos](https://aguasbrasil.snirh.gov.br/consulta-de-atos). Não localizando, solicite ao Atendimento informando CPF/CNPJ e dados do empreendimento: cnarh@ana.gov.br."
   },
   "primeiro_cadastro": {
     "secao": "Cadastro",
     "botao": "Primeiro cadastro",
     "pergunta": "Sou novo usuário / como faço o primeiro cadastro no CNARH",
-    "resposta": "Acesse https://aguasbrasil.snirh.gov.br e clique em 'Primeiro Acesso'. Veja o tutorial, clique em 'Continuar', insira as informações solicitadas e envie o cadastro para análise. Documentos: CPF/CNPJ; comprovante de endereço; outorga ou declaração de uso; coordenadas geográficas do ponto de captação; e outorga anterior ou declaração de regularidade (quando existente). Dúvidas: cnarh@ana.gov.br."
+    "resposta": "Acesse a [Plataforma Águas Brasil](https://aguasbrasil.snirh.gov.br) e clique em 'Primeiro Acesso'. Veja o tutorial, clique em 'Continuar', insira as informações solicitadas e envie o cadastro para análise. Documentos: CPF/CNPJ; comprovante de endereço; outorga ou declaração de uso; coordenadas geográficas do ponto de captação; e outorga anterior ou declaração de regularidade (quando existente). Dúvidas: cnarh@ana.gov.br. [Tutorial completo](https://www.gov.br/ana/pt-br/assuntos/regulacao-e-fiscalizacao/outorga/solicite-sua-outorga/tutoriais/tutoriais-da-plataforma-aguas-brasil/arquivos/02-novo-usuario-de-recursos-hidricos)."
+  },
+  "cadastrar_empreendimento": {
+    "secao": "Cadastro",
+    "botao": "Cadastrar novo empreendimento",
+    "pergunta": "Como cadastro um novo empreendimento na Plataforma",
+    "resposta": "No menu lateral esquerdo, em 'Empreendimento', clique em 'Adicionar Empreendimento'. Informe o usuário titular, dados do empreendimento (nome, localização da sede, coordenadas), o responsável pelo contato e, se aplicável, outros titulares, responsáveis técnicos e procurador. Confirme e valide o e-mail cadastrado para concluir. [Tutorial completo](https://www.gov.br/ana/pt-br/assuntos/regulacao-e-fiscalizacao/outorga/solicite-sua-outorga/tutoriais/tutoriais-da-plataforma-aguas-brasil/arquivos/03-cadastrar-novo-empreendimento)."
   },
   "atualizar_cadastro": {
     "secao": "Cadastro",
     "botao": "Atualizar cadastro",
     "pergunta": "Como atualizo os dados do meu cadastro no CNARH",
-    "resposta": "Acesse https://aguasbrasil.snirh.gov.br/, clique em 'Já sou usuário' e faça login com o gov.br. Abra o módulo 'Cadastro de Usuários' (CNARH), selecione o empreendimento, revise e edite as informações e anexe documentos (se exigido). Confirme e envie a atualização. A aprovação pode ser automática (casos simples) ou passar por análise manual. Acompanhe em 'Minhas Solicitações / Protocolos'. Dúvidas: cnarh@ana.gov.br."
+    "resposta": "Acesse a [Plataforma Águas Brasil](https://aguasbrasil.snirh.gov.br/), clique em 'Já sou usuário' e faça login com o gov.br. Abra o módulo 'Cadastro de Usuários' (CNARH), selecione o empreendimento, revise e edite as informações e anexe documentos (se exigido). Confirme e envie a atualização. A aprovação pode ser automática (casos simples) ou passar por análise manual. Acompanhe em 'Minhas Solicitações / Protocolos'. Dúvidas: cnarh@ana.gov.br."
   },
 
   "declaracao_uso": {
     "secao": "Declaração",
     "botao": "Declaração de uso / automonitoramento",
     "pergunta": "Como faço a declaração anual de uso da água (automonitoramento)",
-    "resposta": "A declaração de uso / automonitoramento é tratada pela área de Fiscalização: cocam@ana.gov.br. Tutorial: Como enviar a declaração de uso de recursos hídricos (https://www.youtube.com/watch?v=yAogc7EZ2WU)."
+    "resposta": "A declaração de uso / automonitoramento é tratada pela área de Fiscalização: cocam@ana.gov.br. Tutorial: [Como enviar a declaração de uso de recursos hídricos](https://www.youtube.com/watch?v=yAogc7EZ2WU)."
   },
   "acompanhar_processo": {
     "secao": "Declaração",
     "botao": "Acompanhar processo",
     "pergunta": "Quero acompanhar o andamento do meu processo / pedido",
-    "resposta": "Autoatendimento: acompanhe na Plataforma Águas Brasil (https://aguasbrasil.snirh.gov.br/): entre com o gov.br e consulte o painel do empreendimento, em 'Minhas Solicitações / Protocolos', onde fica o status de cada pedido. Persistindo dúvida, informe o número do processo e/ou o CNARH para cnarh@ana.gov.br; as demandas são respondidas por ordem de recebimento."
+    "resposta": "Autoatendimento: acompanhe na [Plataforma Águas Brasil](https://aguasbrasil.snirh.gov.br/): entre com o gov.br e consulte o painel do empreendimento, em 'Minhas Solicitações / Protocolos', onde fica o status de cada pedido. Persistindo dúvida, informe o número do processo e/ou o CNARH para cnarh@ana.gov.br; as demandas são respondidas por ordem de recebimento. Tutorial completo: [visualizar pedidos e atos por mapa ou lista](https://www.gov.br/ana/pt-br/assuntos/regulacao-e-fiscalizacao/outorga/solicite-sua-outorga/tutoriais/tutoriais-da-plataforma-aguas-brasil/arquivos/08-visualizar-pedidos-de-outorga-e-atos-autorizativos)."
   }
 }

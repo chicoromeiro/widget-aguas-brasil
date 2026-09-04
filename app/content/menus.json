@@ -18,9 +18,9 @@
     "contact": "COINT",
     "keywords": ["cnarh", "cadastro de usuarios", "cadastro nacional", "acesso", "senha"],
     "message": "Cadastro, acesso e senha (CNARH) são tratados pelo Atendimento ao Usuário (COINT).",
-    "faq": ["senha", "login", "representar", "trocar_email", "primeiro_cadastro",
-            "atualizar_cadastro", "numero_cnarh", "copia_cadastro",
-            "cancelar_interferencia", "ponto_erro"]
+    "faq": ["senha", "login", "representar", "responsavel_tecnico", "trocar_email",
+            "primeiro_cadastro", "cadastrar_empreendimento", "atualizar_cadastro",
+            "numero_cnarh", "copia_cadastro", "cancelar_interferencia", "ponto_erro"]
   },
   "info_outorga": {
     "type": "info",
@@ -28,7 +28,8 @@
     "keywords": ["outorga", "declaracao de regularidade", "uso insignificante"],
     "message": "Outorga, Declaração de Regularidade e uso insignificante são tratados pela Outorga (COOUT).",
     "faq": ["outorga_nova", "outorga_renovar", "declaracao_regularidade",
-            "uso_insignificante", "copia_portaria", "corpo_estadual", "titularidade"]
+            "uso_insignificante", "copia_portaria", "corpo_estadual", "titularidade",
+            "outorga_desistir", "outorga_responder_comunicacao", "outorga_aprovar_ajustes"]
   },
   "info_cobranca": {
     "type": "info",
@@ -62,7 +63,7 @@
     "type": "info",
     "contact": "AGUASBRASIL",
     "keywords": ["aguas brasil", "plataforma aguas brasil", "aguasbrasil", "portal aguas"],
-    "message": "A Plataforma Águas Brasil (https://aguasbrasil.snirh.gov.br/) concentra os serviços de recursos hídricos, com acesso via gov.br.",
+    "message": "A [Plataforma Águas Brasil](https://aguasbrasil.snirh.gov.br/) concentra os serviços de recursos hídricos, com acesso via gov.br.",
     "faq": ["login", "primeiro_cadastro", "migrar_regla"]
   }
 }
