@@ -78,7 +78,7 @@ def test_opcoes_clicaveis():
     d = _chat("__start__")
     vals = [o["value"] for o in d["options"]]
     assert vals[:7] == ["1", "2", "3", "4", "5", "6", "7"]   # 7 topicos
-    assert "acao:chamado" in vals                            # + abrir chamado no menu
+    assert "acao:chamado" not in vals                        # sem botao no menu inicial
     assert d["options"][0]["icon"]
     sid = d["session_id"]
     d = _chat("2", sid)                                       # tela de info (outorga = COOUT)

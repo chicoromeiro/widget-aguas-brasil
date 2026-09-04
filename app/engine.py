@@ -194,9 +194,11 @@ class ChatEngine:
         ultimo = state.dados.get("_ultimo_faq")
 
         if node and node.get("type") == "menu":
+            # Sem "Abrir chamado" aqui: no menu inicial ainda nao ha
+            # coordenacao definida - o botao so aparece dentro dos topicos
+            # que a COINT atende (CNARH, Aguas Brasil).
             botoes = [{"label": o["label"], "value": o["key"], "icon": o.get("icon", "")}
                       for o in node["options"]]
-            botoes.append({"label": "Abrir chamado", "value": "acao:chamado", "icon": "ticket"})
         elif node and node.get("type") == "info":
             # Sub-botoes das perguntas daquele topico (afunila) + acoes.
             # A pergunta recem-clicada NAO e reoferecida; no lugar, um "Voltar".
