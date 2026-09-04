@@ -57,7 +57,8 @@
     home: '<path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/>',
     check: '<path d="M5 12l5 5 9-10"/>',
     refresh: '<path d="M20 11a8 8 0 0 0-14-4M4 5v4h4M4 13a8 8 0 0 0 14 4M20 19v-4h-4"/>',
-    flag: '<path d="M6 3v18"/><path d="M6 4h11l-2 4 2 4H6"/>'
+    flag: '<path d="M6 3v18"/><path d="M6 4h11l-2 4 2 4H6"/>',
+    upload: '<path d="M12 16V4M12 4l-4 4M12 4l4 4"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>'
   };
 
   function iconEl(name) {
@@ -109,7 +110,7 @@
     body.scrollTop += m.getBoundingClientRect().top - body.getBoundingClientRect().top;
   }
 
-  var root, body, input, sendBtn, sessionId = null, busy = false;
+  var root, body, input, sendBtn, fileInput, sessionId = null, busy = false;
 
   function build() {
     root = el("div", "abw-root");
@@ -161,6 +162,19 @@
     sendBtn.onclick = send;
     footer.appendChild(input); footer.appendChild(sendBtn);
 
+    // Input de arquivo escondido - usado pelo chip "Anexar imagem" durante o
+    // fluxo de chamado (dispara o seletor nativo do navegador).
+    fileInput = el("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/jpeg,image/png,image/webp,image/gif";
+    fileInput.style.display = "none";
+    fileInput.onchange = function () {
+      var f = fileInput.files && fileInput.files[0];
+      fileInput.value = "";   // permite escolher o mesmo arquivo de novo depois
+      if (f) uploadAnexo(f);
+    };
+    panel.appendChild(fileInput);
+
     panel.appendChild(header); panel.appendChild(body); panel.appendChild(footer);
     root.appendChild(panel); root.appendChild(launcher);
     document.body.appendChild(root);
@@ -192,15 +206,25 @@
     return m;
   }
 
-  function setTyping(on) {
+  function setTyping(on, label) {
     var t = document.getElementById("abw-typing");
     if (on && !t) {
-      t = el("div", "abw-typing", "digitando...");
+      t = el("div", "abw-typing", label || "digitando...");
       t.id = "abw-typing";
       body.appendChild(t); body.scrollTop = body.scrollHeight;
     } else if (!on && t) {
       t.remove();
     }
+  }
+
+  // Aplica a resposta do backend (reply + options) igual para /chat e /anexo.
+  function aplicarResposta(resBody) {
+    sessionId = resBody.session_id;
+    try { localStorage.setItem(STORAGE_KEY, sessionId); } catch (e) {}
+    var opts = resBody.options || [];
+    var m = addMsg(cleanReply(resBody.reply, opts.length > 0), "bot");
+    renderOptions(opts);
+    scrollMsgTop(m);
   }
 
   function post(message) {
@@ -222,12 +246,44 @@
           addMsg("Ocorreu um erro. Tente novamente em instantes.", "bot");
           return;
         }
-        sessionId = res.body.session_id;
-        try { localStorage.setItem(STORAGE_KEY, sessionId); } catch (e) {}
-        var opts = res.body.options || [];
-        var m = addMsg(cleanReply(res.body.reply, opts.length > 0), "bot");
-        renderOptions(opts);
-        scrollMsgTop(m);   // mostra o inicio da resposta, nao o fim
+        aplicarResposta(res.body);
+      })
+      .catch(function () {
+        setTyping(false);
+        addMsg("Nao foi possivel conectar ao assistente. Tente novamente.", "bot");
+      })
+      .finally(function () { busy = false; sendBtn.disabled = false; });
+  }
+
+  // Upload do print anexado no fluxo de chamado (endpoint separado, multipart -
+  // nao e uma mensagem de texto do /chat).
+  function uploadAnexo(file) {
+    if (busy) return;
+    clearChips();
+    addMsg("[imagem: " + file.name + "]", "user");
+    busy = true; sendBtn.disabled = true; setTyping(true, "enviando imagem...");
+    var fd = new FormData();
+    fd.append("session_id", sessionId);
+    fd.append("file", file);
+    fetch(API + "/anexo", { method: "POST", body: fd })
+      .then(function (r) {
+        return r.json().then(function (body) { return { status: r.status, body: body }; });
+      })
+      .then(function (res) {
+        setTyping(false);
+        if (res.status === 429) {
+          addMsg((res.body && res.body.detail) || "Aguarde um momento e tente novamente.", "bot");
+          return;
+        }
+        if (res.status >= 400) {
+          addMsg((res.body && res.body.detail) ||
+                 "Nao foi possivel enviar a imagem. Tente novamente.", "bot");
+          renderOptions([{ label: "Anexar imagem", value: "acao:anexar", icon: "upload" },
+                         { label: "Pular", value: "pular", icon: "back" },
+                         { label: "Cancelar", value: "0", icon: "home" }]);
+          return;
+        }
+        aplicarResposta(res.body);
       })
       .catch(function () {
         setTyping(false);
@@ -252,8 +308,11 @@
   }
 
   // Clique num chip: mostra o rotulo como mensagem do usuario e envia o valor.
+  // "acao:anexar" e especial: nao e uma mensagem de texto, abre o seletor de
+  // arquivo do navegador (o upload em si vai por uploadAnexo/fileInput).
   function sendValue(value, label) {
     if (busy) return;
+    if (value === "acao:anexar") { fileInput.click(); return; }
     clearChips();
     addMsg(label, "user");
     post(value);

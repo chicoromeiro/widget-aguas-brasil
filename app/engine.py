@@ -12,6 +12,7 @@ O motor NUNCA gera texto livre de resposta: ele so seleciona conteudo aprovado
 """
 import re
 import random
+import base64
 import logging
 import unicodedata
 from datetime import datetime, timezone, timedelta
@@ -56,11 +57,21 @@ _TICKET_PROMPTS = {
     "telefone": "Informe seu telefone com DDD:",
     "cnarh": "Informe seu número CNARH (ou digite 'não tenho'):",
     "descricao": "Descreva o problema com detalhes (mínimo 10 caracteres):",
+    "anexo": ("Deseja anexar um print da tela com o problema? (opcional)\n\n"
+              "Use o botão de anexo abaixo, ou digite 'pular' para continuar sem imagem."),
 }
 _TICKET_ROTULOS = {
     "nome": "Nome", "cpf_cnpj": "CPF/CNPJ", "email": "E-mail",
     "telefone": "Telefone", "cnarh": "CNARH", "descricao": "Descrição",
 }
+_PULAR_ANEXO = {"pular", "nao", "n", "sem anexo", "nenhum"}
+
+# Abrir chamado pelo assistente e um canal da COINT - so faz sentido para
+# assuntos que a propria COINT atende (cadastro/acesso/CNARH) ou da Plataforma
+# Aguas Brasil em si. Nas demais coordenacoes (outorga, cobranca, boleto,
+# fiscalizacao) o contato certo ja aparece na tela do topico; abrir chamado
+# ali so desviaria o assunto para a caixa errada (cnarh@ana.gov.br).
+_CHAMADO_COORDENACOES = {"COINT", "AGUASBRASIL"}
 
 
 def _limpar_prefixo(texto: str) -> str:
@@ -139,6 +150,20 @@ class ChatEngine:
             state.dados["_ultimo_faq"] = fid
         return resp
 
+    def _pode_abrir_chamado(self, state: SessionState) -> bool:
+        node = self.menus.get(state.step)
+        if node and node.get("type") == "info":
+            return node.get("contact") in _CHAMADO_COORDENACOES
+        return True  # menu raiz ou outro estado: ainda sem coordenacao definida
+
+    def _chamado_bloqueado_msg(self, state: SessionState) -> str:
+        node = self.menus.get(state.step)
+        base = ("Chamados pelo assistente atendem apenas assuntos de Cadastro, "
+                "acesso e senha (CNARH) ou da Plataforma Águas Brasil.")
+        if node and node.get("type") == "info":
+            return base + " Para este assunto, utilize o contato informado acima."
+        return base
+
     def _safety_net(self) -> str:
         return ("Não encontrei uma resposta pronta para isso. Escolha um assunto "
                 "abaixo, ou descreva de outro jeito.")
@@ -183,7 +208,11 @@ class ChatEngine:
                 if e:
                     botoes.append({"label": e.get("botao", e["pergunta"][:40]),
                                    "value": f"faq:{fid}", "icon": ""})
-            botoes.append({"label": "Abrir chamado", "value": "acao:chamado", "icon": "ticket"})
+            # So oferece "Abrir chamado" para as coordenacoes que a COINT
+            # atende (cadastro/CNARH, Aguas Brasil) - nas demais, o contato
+            # certo ja esta na mensagem do topico.
+            if node.get("contact") in _CHAMADO_COORDENACOES:
+                botoes.append({"label": "Abrir chamado", "value": "acao:chamado", "icon": "ticket"})
             if ultimo:
                 # Lendo uma resposta: "Voltar" retorna a lista do topico (tela
                 # anterior); "Menu inicial" vai ao inicio. Ambos disponiveis.
@@ -193,6 +222,10 @@ class ChatEngine:
             if step == "ticket_revisao":
                 return [{"label": "Confirmar", "value": "confirmar", "icon": "check"},
                         {"label": "Recomeçar", "value": "recomecar", "icon": "refresh"},
+                        {"label": "Cancelar", "value": "0", "icon": "home"}]
+            if step == "ticket_anexo":
+                return [{"label": "Anexar imagem", "value": "acao:anexar", "icon": "upload"},
+                        {"label": "Pular", "value": "pular", "icon": "back"},
                         {"label": "Cancelar", "value": "0", "icon": "home"}]
             return [{"label": "Cancelar", "value": "0", "icon": "home"}]
         else:
@@ -229,6 +262,8 @@ class ChatEngine:
             resp = self._marcar_resposta_faq(state, fid)
             return resp or self._safety_net()
         if texto == "acao:chamado":
+            if not self._pode_abrir_chamado(state):
+                return self._chamado_bloqueado_msg(state)
             return self._goto(state, "abrir_chamado")
         if texto == "acao:voltar":
             # "Voltar" = tela anterior. Lendo uma resposta -> volta a lista de
@@ -260,6 +295,8 @@ class ChatEngine:
         # Comando "abrir chamado" digitado (fora do ticket): e uma ACAO, nao
         # triagem - por isso e deterministico e nao vai para a IA.
         if "chamad" in low:
+            if not self._pode_abrir_chamado(state):
+                return self._chamado_bloqueado_msg(state)
             return self._goto(state, "abrir_chamado")
 
         # Telas informativas: reset ja foi tratado acima; qualquer outra entrada
@@ -370,8 +407,15 @@ class ChatEngine:
             if len(texto.strip()) < 10:
                 return "Descreva com mais detalhes (mínimo 10 caracteres):"
             chamado["descricao"] = sanitizar(texto)
-            state.step = "ticket_revisao"
-            return self._render_revisao(chamado)
+            state.step = "ticket_anexo"
+            return _TICKET_PROMPTS["anexo"]
+
+        if campo == "anexo":
+            if _norm(low) in _PULAR_ANEXO:
+                state.step = "ticket_revisao"
+                return self._render_revisao(chamado)
+            return ("Para anexar, use o botão de anexo abaixo, ou digite 'pular' "
+                    "para continuar sem imagem.")
 
         if campo == "revisao":
             if _norm(low) in _CONFIRMA:
@@ -448,9 +492,25 @@ class ChatEngine:
         linhas = ["Revise os dados do chamado:", ""]
         for campo in _TICKET_STEPS:
             linhas.append(f"{_TICKET_ROTULOS[campo]}: {chamado.get(campo, '-')}")
+        anexo = chamado.get("_anexo")
+        linhas.append(f"Anexo: {anexo['nome'] if anexo else 'Nenhum'}")
         linhas.append("")
         linhas.append("Digite CONFIRMAR para abrir, RECOMEÇAR para reiniciar, ou 0 para cancelar.")
         return "\n".join(linhas)
+
+    def handle_anexo(self, state: SessionState, conteudo: bytes, nome: str, tipo: str):
+        """Recebe o print anexado durante o fluxo de chamado (passo ticket_anexo).
+        Chamado pelo endpoint /anexo (upload de arquivo, fora do /chat de texto)."""
+        if state.step != "ticket_anexo":
+            return "Não é possível anexar um arquivo agora.", self.quick_replies(state)
+        chamado = state.dados.setdefault("_chamado", {})
+        chamado["_anexo"] = {
+            "nome": sanitizar(nome)[:120] or "print.jpg",
+            "tipo": tipo,
+            "dados_b64": base64.b64encode(conteudo).decode("ascii"),
+        }
+        state.step = "ticket_revisao"
+        return self._render_revisao(chamado), self.quick_replies(state)
 
     def _finalizar_chamado(self, state: SessionState, chamado: dict, ctx: dict) -> str:
         ip_hash = ctx.get("ip_hash", "")

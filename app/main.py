@@ -10,7 +10,7 @@ Expoe:
 import logging
 from uuid import uuid4
 
-from fastapi import FastAPI, Request, HTTPException, Header
+from fastapi import FastAPI, Request, HTTPException, Header, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -43,6 +43,8 @@ engine = ChatEngine(repo)
 limiter = RateLimiter(max_events=config.RATE_LIMIT_PER_MIN, window_seconds=60)
 
 MAX_MSG = 4000
+MAX_ANEXO_BYTES = 5 * 1024 * 1024  # 5 MB - anexo de print de tela, nao arquivo grande
+TIPOS_ANEXO_PERMITIDOS = {"image/jpeg", "image/png", "image/webp", "image/gif"}
 
 
 class ChatIn(BaseModel):
@@ -88,6 +90,33 @@ def chat(payload: ChatIn, request: Request):
     state = repo.get_or_create(session_id)
     reply = engine.handle(state, payload.message or "", ctx={"ip_hash": ip_hash})
     options = engine.quick_replies(state)
+    repo.save(state)
+    return ChatOut(session_id=session_id, reply=reply, options=options)
+
+
+@app.post("/anexo", response_model=ChatOut)
+async def anexo(session_id: str = Form(...), file: UploadFile = File(...), request: Request = None):
+    """
+    Recebe o print de tela anexado durante o fluxo de chamado (passo
+    ticket_anexo). Endpoint separado do /chat porque envia um arquivo
+    (multipart), nao uma mensagem de texto.
+    """
+    ip_hash = hash_ip(get_client_ip(request))
+    if config.RATE_LIMIT_ENABLED and not limiter.allow(ip_hash):
+        raise HTTPException(
+            status_code=429,
+            detail="Voce enviou muitas mensagens em pouco tempo. Aguarde alguns instantes.",
+        )
+    if file.content_type not in TIPOS_ANEXO_PERMITIDOS:
+        raise HTTPException(status_code=400,
+                             detail="Formato de imagem nao suportado. Envie JPG, PNG, WEBP ou GIF.")
+
+    conteudo = await file.read()
+    if len(conteudo) > MAX_ANEXO_BYTES:
+        raise HTTPException(status_code=413, detail="Imagem muito grande (maximo 5 MB).")
+
+    state = repo.get_or_create(session_id)
+    reply, options = engine.handle_anexo(state, conteudo, file.filename or "print.jpg", file.content_type)
     repo.save(state)
     return ChatOut(session_id=session_id, reply=reply, options=options)
 

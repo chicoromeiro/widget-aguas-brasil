@@ -14,6 +14,7 @@ Por que API HTTP e nao SMTP: varios provedores de hospedagem bloqueiam
 trafego de saida nas portas SMTP no plano gratuito (ver app/config.py). A API
 roda por HTTPS normal, sem esse problema.
 """
+import base64
 import logging
 
 import httpx
@@ -35,6 +36,8 @@ _CAMPOS = [
 
 def _corpo(dados: dict, protocolo: str) -> tuple:
     """Monta o corpo do e-mail do chamado em HTML e em texto simples."""
+    anexo = dados.get("_anexo")
+    anexo_nome = anexo["nome"] if anexo else "Nenhum"
     html = [f"<h2>Novo Chamado - Plataforma Aguas Brasil</h2>",
             f"<p><strong>Protocolo:</strong> {sanitizar(protocolo)}</p>"]
     texto = [f"Novo Chamado - Plataforma Aguas Brasil", f"Protocolo: {protocolo}"]
@@ -42,22 +45,28 @@ def _corpo(dados: dict, protocolo: str) -> tuple:
         valor = sanitizar(str(dados.get(chave, "Nao informado")))
         html.append(f"<p><strong>{rotulo}:</strong> {valor}</p>")
         texto.append(f"{rotulo}: {dados.get(chave, 'Nao informado')}")
+    html.append(f"<p><strong>Anexo:</strong> {sanitizar(anexo_nome)}</p>")
+    texto.append(f"Anexo: {anexo_nome}")
     html.append("<p><em>E-mail automatico do assistente virtual (COINT/ANA).</em></p>")
     texto.append("\nE-mail automatico do assistente virtual (COINT/ANA).")
     return "\n".join(texto), "\n".join(html)
 
 
-def _enviar(assunto: str, texto: str, html: str, destino: str) -> bool:
+def _enviar(assunto: str, texto: str, html: str, destino: str, anexo: dict = None) -> bool:
     """Envia um e-mail via API HTTP do Mailgun. Retorna True se aceito para envio."""
     if not config.EMAIL_ENABLED:
         return False
+    files = None
+    if anexo:
+        files = {"attachment": (anexo["nome"], base64.b64decode(anexo["dados_b64"]), anexo["tipo"])}
     try:
         r = httpx.post(
             f"{config.MAILGUN_BASE_URL}/{config.MAILGUN_DOMAIN}/messages",
             auth=("api", config.MAILGUN_API_KEY),
             data={"from": config.CHAMADO_EMAIL_FROM, "to": [destino],
                   "subject": assunto, "text": texto, "html": html},
-            timeout=15,
+            files=files,
+            timeout=30,  # anexo pode deixar o envio mais lento que o padrao (15s)
         )
         r.raise_for_status()
         return True
@@ -87,6 +96,6 @@ def enviar_email_chamado(dados: dict, protocolo: str) -> bool:
         return False
     texto, html = _corpo(dados, protocolo)
     ok = _enviar(f"Novo Chamado - Plataforma Aguas Brasil - {protocolo}",
-                 texto, html, config.CHAMADO_EMAIL_TO)
+                 texto, html, config.CHAMADO_EMAIL_TO, anexo=dados.get("_anexo"))
     logger.info("Chamado %s %s.", protocolo, "enviado por e-mail" if ok else "com falha de envio")
     return ok
